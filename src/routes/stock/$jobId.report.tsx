@@ -19,6 +19,10 @@ import {
 import type { AnalysisReport } from "../../lib/stock/types";
 
 export const Route = createFileRoute("/stock/$jobId/report")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    ticker: (search.ticker as string) ?? "",
+    displayName: (search.displayName as string) ?? "",
+  }),
   component: ReportPage,
 });
 
@@ -383,18 +387,22 @@ function ModeratorSection({ report }: { report: AnalysisReport }) {
 
 function ReportPage() {
   const { jobId } = Route.useParams();
+  const { ticker, displayName } = Route.useSearch();
   const [report, setReport] = useState<AnalysisReport | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`/api/stock/report?jobId=${jobId}`)
+    const params = new URLSearchParams({ jobId });
+    if (ticker) params.set("ticker", ticker);
+    if (displayName) params.set("displayName", displayName);
+    fetch(`/api/stock/report?${params}`)
       .then((r) => {
         if (!r.ok) throw new Error("리포트를 불러올 수 없습니다");
         return r.json();
       })
       .then(setReport)
       .catch((e: Error) => setError(e.message));
-  }, [jobId]);
+  }, [jobId, ticker, displayName]);
 
   if (error) {
     return (

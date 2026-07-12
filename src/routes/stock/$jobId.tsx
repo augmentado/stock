@@ -290,7 +290,11 @@ function AnalysisPage() {
               {displayName} 종합 리포트가 준비되었습니다
             </p>
             <button
-              onClick={() => navigate({ to: "/stock/$jobId/report", params: { jobId } })}
+              onClick={() => navigate({
+                to: "/stock/$jobId/report",
+                params: { jobId },
+                search: { ticker, displayName },
+              })}
               className="rounded-full bg-foreground px-6 py-2.5 text-[14px] font-medium text-background transition hover:bg-foreground/80"
             >
               리포트 보기 →
