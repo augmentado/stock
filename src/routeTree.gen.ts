@@ -9,38 +9,163 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StockIndexRouteImport } from './routes/stock/index'
+import { Route as StockJobIdRouteImport } from './routes/stock/$jobId'
+import { Route as CheckoutSuccessRouteImport } from './routes/checkout/success'
+import { Route as CheckoutFailRouteImport } from './routes/checkout/fail'
+import { Route as StockJobIdReportRouteImport } from './routes/stock/$jobId.report'
+import { Route as ApiStockReportRouteImport } from './routes/api/stock/report'
+import { Route as ApiStockJobRouteImport } from './routes/api/stock/job'
+import { Route as ApiStockAnalyzeRouteImport } from './routes/api/stock/analyze'
 
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StockIndexRoute = StockIndexRouteImport.update({
+  id: '/stock/',
+  path: '/stock/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StockJobIdRoute = StockJobIdRouteImport.update({
+  id: '/stock/$jobId',
+  path: '/stock/$jobId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => CheckoutRoute,
+} as any)
+const CheckoutFailRoute = CheckoutFailRouteImport.update({
+  id: '/fail',
+  path: '/fail',
+  getParentRoute: () => CheckoutRoute,
+} as any)
+const StockJobIdReportRoute = StockJobIdReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => StockJobIdRoute,
+} as any)
+const ApiStockReportRoute = ApiStockReportRouteImport.update({
+  id: '/api/stock/report',
+  path: '/api/stock/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStockJobRoute = ApiStockJobRouteImport.update({
+  id: '/api/stock/job',
+  path: '/api/stock/job',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStockAnalyzeRoute = ApiStockAnalyzeRouteImport.update({
+  id: '/api/stock/analyze',
+  path: '/api/stock/analyze',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRouteWithChildren
+  '/checkout/fail': typeof CheckoutFailRoute
+  '/checkout/success': typeof CheckoutSuccessRoute
+  '/stock/$jobId': typeof StockJobIdRouteWithChildren
+  '/stock/': typeof StockIndexRoute
+  '/api/stock/analyze': typeof ApiStockAnalyzeRoute
+  '/api/stock/job': typeof ApiStockJobRoute
+  '/api/stock/report': typeof ApiStockReportRoute
+  '/stock/$jobId/report': typeof StockJobIdReportRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRouteWithChildren
+  '/checkout/fail': typeof CheckoutFailRoute
+  '/checkout/success': typeof CheckoutSuccessRoute
+  '/stock/$jobId': typeof StockJobIdRouteWithChildren
+  '/stock': typeof StockIndexRoute
+  '/api/stock/analyze': typeof ApiStockAnalyzeRoute
+  '/api/stock/job': typeof ApiStockJobRoute
+  '/api/stock/report': typeof ApiStockReportRoute
+  '/stock/$jobId/report': typeof StockJobIdReportRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRouteWithChildren
+  '/checkout/fail': typeof CheckoutFailRoute
+  '/checkout/success': typeof CheckoutSuccessRoute
+  '/stock/$jobId': typeof StockJobIdRouteWithChildren
+  '/stock/': typeof StockIndexRoute
+  '/api/stock/analyze': typeof ApiStockAnalyzeRoute
+  '/api/stock/job': typeof ApiStockJobRoute
+  '/api/stock/report': typeof ApiStockReportRoute
+  '/stock/$jobId/report': typeof StockJobIdReportRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/checkout'
+    | '/checkout/fail'
+    | '/checkout/success'
+    | '/stock/$jobId'
+    | '/stock/'
+    | '/api/stock/analyze'
+    | '/api/stock/job'
+    | '/api/stock/report'
+    | '/stock/$jobId/report'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/checkout'
+    | '/checkout/fail'
+    | '/checkout/success'
+    | '/stock/$jobId'
+    | '/stock'
+    | '/api/stock/analyze'
+    | '/api/stock/job'
+    | '/api/stock/report'
+    | '/stock/$jobId/report'
+  id:
+    | '__root__'
+    | '/'
+    | '/checkout'
+    | '/checkout/fail'
+    | '/checkout/success'
+    | '/stock/$jobId'
+    | '/stock/'
+    | '/api/stock/analyze'
+    | '/api/stock/job'
+    | '/api/stock/report'
+    | '/stock/$jobId/report'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CheckoutRoute: typeof CheckoutRouteWithChildren
+  StockJobIdRoute: typeof StockJobIdRouteWithChildren
+  StockIndexRoute: typeof StockIndexRoute
+  ApiStockAnalyzeRoute: typeof ApiStockAnalyzeRoute
+  ApiStockJobRoute: typeof ApiStockJobRoute
+  ApiStockReportRoute: typeof ApiStockReportRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +173,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stock/': {
+      id: '/stock/'
+      path: '/stock'
+      fullPath: '/stock/'
+      preLoaderRoute: typeof StockIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stock/$jobId': {
+      id: '/stock/$jobId'
+      path: '/stock/$jobId'
+      fullPath: '/stock/$jobId'
+      preLoaderRoute: typeof StockJobIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/success': {
+      id: '/checkout/success'
+      path: '/success'
+      fullPath: '/checkout/success'
+      preLoaderRoute: typeof CheckoutSuccessRouteImport
+      parentRoute: typeof CheckoutRoute
+    }
+    '/checkout/fail': {
+      id: '/checkout/fail'
+      path: '/fail'
+      fullPath: '/checkout/fail'
+      preLoaderRoute: typeof CheckoutFailRouteImport
+      parentRoute: typeof CheckoutRoute
+    }
+    '/stock/$jobId/report': {
+      id: '/stock/$jobId/report'
+      path: '/report'
+      fullPath: '/stock/$jobId/report'
+      preLoaderRoute: typeof StockJobIdReportRouteImport
+      parentRoute: typeof StockJobIdRoute
+    }
+    '/api/stock/report': {
+      id: '/api/stock/report'
+      path: '/api/stock/report'
+      fullPath: '/api/stock/report'
+      preLoaderRoute: typeof ApiStockReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stock/job': {
+      id: '/api/stock/job'
+      path: '/api/stock/job'
+      fullPath: '/api/stock/job'
+      preLoaderRoute: typeof ApiStockJobRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stock/analyze': {
+      id: '/api/stock/analyze'
+      path: '/api/stock/analyze'
+      fullPath: '/api/stock/analyze'
+      preLoaderRoute: typeof ApiStockAnalyzeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface CheckoutRouteChildren {
+  CheckoutFailRoute: typeof CheckoutFailRoute
+  CheckoutSuccessRoute: typeof CheckoutSuccessRoute
+}
+
+const CheckoutRouteChildren: CheckoutRouteChildren = {
+  CheckoutFailRoute: CheckoutFailRoute,
+  CheckoutSuccessRoute: CheckoutSuccessRoute,
+}
+
+const CheckoutRouteWithChildren = CheckoutRoute._addFileChildren(
+  CheckoutRouteChildren,
+)
+
+interface StockJobIdRouteChildren {
+  StockJobIdReportRoute: typeof StockJobIdReportRoute
+}
+
+const StockJobIdRouteChildren: StockJobIdRouteChildren = {
+  StockJobIdReportRoute: StockJobIdReportRoute,
+}
+
+const StockJobIdRouteWithChildren = StockJobIdRoute._addFileChildren(
+  StockJobIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CheckoutRoute: CheckoutRouteWithChildren,
+  StockJobIdRoute: StockJobIdRouteWithChildren,
+  StockIndexRoute: StockIndexRoute,
+  ApiStockAnalyzeRoute: ApiStockAnalyzeRoute,
+  ApiStockJobRoute: ApiStockJobRoute,
+  ApiStockReportRoute: ApiStockReportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -59,12 +60,20 @@ function Nav() {
           <a href="#features" className="hover:text-foreground">기능</a>
           <a href="#pricing" className="hover:text-foreground">요금</a>
         </nav>
-        <a
-          href="#cta"
-          className="rounded-full bg-foreground px-4 py-1.5 text-[12px] font-medium text-background transition hover:bg-accent"
-        >
-          Waitlist
-        </a>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/stock"
+            className="rounded-full border border-border px-4 py-1.5 text-[12px] font-medium transition hover:bg-secondary"
+          >
+            주식 분석 →
+          </Link>
+          <a
+            href="#cta"
+            className="rounded-full bg-foreground px-4 py-1.5 text-[12px] font-medium text-background transition hover:bg-accent"
+          >
+            Waitlist
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -116,12 +125,14 @@ function Hero() {
             얼리 액세스 신청
             <span className="transition group-hover:translate-x-0.5">→</span>
           </a>
-          <a
-            href="#beforeafter"
-            className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-[14px] font-medium text-foreground hover:bg-secondary"
+          <Link
+            to="/stock"
+            className="group inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-[14px] font-medium text-foreground hover:bg-secondary transition"
           >
-            어떻게 바뀌는지 보기
-          </a>
+            <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+            AI 주식 분석 체험하기
+            <span className="transition group-hover:translate-x-0.5">→</span>
+          </Link>
         </div>
       </div>
     </section>
