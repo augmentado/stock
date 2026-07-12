@@ -409,7 +409,7 @@ function ReportPage() {
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4">
         <div className="text-center">
           <p className="text-destructive mb-4">{error}</p>
-          <Link to="/stock/$jobId" params={{ jobId }} className="text-[13px] text-muted-foreground hover:text-foreground transition">
+          <Link to="/stock/$jobId" params={{ jobId }} search={{ ticker, displayName }} className="text-[13px] text-muted-foreground hover:text-foreground transition">
             ← 분석 페이지로
           </Link>
         </div>
@@ -437,6 +437,7 @@ function ReportPage() {
           <Link
             to="/stock/$jobId"
             params={{ jobId }}
+            search={{ ticker, displayName }}
             className="text-[13px] text-muted-foreground hover:text-foreground transition mb-4 inline-block"
           >
             ← 분석 진행 현황

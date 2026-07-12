@@ -3,6 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import type { AgentLog, SSEEvent } from "../../lib/stock/types";
 
 export const Route = createFileRoute("/stock/$jobId")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    ticker: (search.ticker as string) ?? "",
+    displayName: (search.displayName as string) ?? "",
+  }),
   component: AnalysisPage,
 });
 
@@ -115,23 +119,14 @@ function ElapsedTimer({ startedAt }: { startedAt: number }) {
 
 function AnalysisPage() {
   const { jobId } = Route.useParams();
+  const { ticker, displayName } = Route.useSearch();
   const navigate = useNavigate();
   const [agents, setAgents] = useState<AgentLog[]>([]);
   const [pageStatus, setPageStatus] = useState<PageStatus>("running");
   const [errorMsg, setErrorMsg] = useState("");
-  const [ticker, setTicker] = useState("");
-  const [displayName, setDisplayName] = useState("");
   const startedAt = useRef(Date.now());
 
   useEffect(() => {
-    // jobId로 먼저 기본 정보 조회
-    fetch(`/api/stock/analyze?jobId=${jobId}`)
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.ticker) setTicker(d.ticker);
-        if (d.displayName) setDisplayName(d.displayName);
-      })
-      .catch(() => {});
 
     const sse = new EventSource(`/api/stock/job?jobId=${jobId}`);
 

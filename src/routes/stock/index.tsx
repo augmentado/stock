@@ -43,8 +43,8 @@ function StockSearchPage() {
         return;
       }
 
-      const { jobId } = await res.json();
-      navigate({ to: "/stock/$jobId", params: { jobId } });
+      const { jobId, ticker, displayName } = await res.json();
+      navigate({ to: "/stock/$jobId", params: { jobId }, search: { ticker, displayName } });
     } catch {
       setError("서버에 연결할 수 없습니다");
     } finally {
